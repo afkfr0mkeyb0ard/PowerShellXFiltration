@@ -107,5 +107,5 @@ def parseURL(path):
 
 
 httpd = HTTPServer((HOST,PORT), SimpleHTTPRequestHandler)
-httpd.serve_forever()
 log("[+] Starting server on " + HOST + ":" + str(PORT),print_console=True,trace_time=True)
+httpd.serve_forever()
