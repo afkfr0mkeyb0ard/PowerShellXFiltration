@@ -3,11 +3,8 @@ A Python web server to execute several actions on a Windows system, acting like 
 Useful for redteam.
 
 ### Example
-1. Change the listening IP/Port in `server.py` (default is `0.0.0.0:8000`).
-2. Change the IP/port of your Python server in `client_exf.ps1` (`<HOST>` and `<PORT>`).
-3. Change the IP/port of your listener reverse-shell in `client_rvs.ps1` (`<HOST>` and `<PORT>`).
-4. Change the `<BASE64_ENCODED_PAYLOAD>` for persistence in `client_pers.ps1` (encode with UTF-16LE).
-5. Run:
+1. Change the settings in `config.py`.
+2. Run:
 ```
 ATTACKER> python3 server.py
 
