@@ -162,6 +162,6 @@ if not os.path.isfile(config.server['CERT_PEMFILE']):
     sys.exit()
 
 httpd = HTTPServer((config.server['SERVER_LISTEN_ON_LOCAL_IP'],int(config.server['SERVER_LISTEN_ON_LOCAL_PORT'])), SimpleHTTPRequestHandler)
-httpd.socket = ssl.wrap_socket (httpd.socket,keyfile="config.server['CERT_KEYFILE']",certfile="config.server['CERT_PEMFILE']", server_side=True)
+httpd.socket = ssl.wrap_socket (httpd.socket,keyfile=config.server['CERT_KEYFILE'],certfile=config.server['CERT_PEMFILE'], server_side=True)
 log("[+] Starting server on " + config.server['SERVER_LISTEN_ON_LOCAL_IP'] + ":" + str(config.server['SERVER_LISTEN_ON_LOCAL_PORT']),print_console=True,trace_time=True)
 httpd.serve_forever()
