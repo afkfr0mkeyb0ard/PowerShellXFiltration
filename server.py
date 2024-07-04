@@ -154,11 +154,11 @@ def parseURL(path):
         return None
 
 if not os.path.isfile(config.server['CERT_KEYFILE']):
-    print([-] "Certificate key file not found, check config.py")
+    print("[-] Certificate key file not found, check config.py")
     sys.exit()
 
 if not os.path.isfile(config.server['CERT_PEMFILE']):
-    print([-] "Certificate file not found, check config.py")
+    print("[-] Certificate file not found, check config.py")
     sys.exit()
 
 httpd = HTTPServer((config.server['SERVER_LISTEN_ON_LOCAL_IP'],int(config.server['SERVER_LISTEN_ON_LOCAL_PORT'])), SimpleHTTPRequestHandler)
