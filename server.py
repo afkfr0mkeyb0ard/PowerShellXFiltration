@@ -5,7 +5,11 @@ import os
 import logging
 import base64
 from datetime import datetime
+import ssl
 import config
+import sys
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning) 
 
 CURRENT_DIR = os.getcwd()
 
@@ -149,7 +153,15 @@ def parseURL(path):
     else:
         return None
 
+if not os.path.isfile(config.server['CERT_KEYFILE']):
+    print([-] "Certificate key file not found, check config.py")
+    sys.exit()
+
+if not os.path.isfile(config.server['CERT_PEMFILE']):
+    print([-] "Certificate file not found, check config.py")
+    sys.exit()
 
 httpd = HTTPServer((config.server['SERVER_LISTEN_ON_LOCAL_IP'],int(config.server['SERVER_LISTEN_ON_LOCAL_PORT'])), SimpleHTTPRequestHandler)
+httpd.socket = ssl.wrap_socket (httpd.socket,keyfile="config.server['CERT_KEYFILE'],certfile='config.server['CERT_PEMFILE']', server_side=True)
 log("[+] Starting server on " + config.server['SERVER_LISTEN_ON_LOCAL_IP'] + ":" + str(config.server['SERVER_LISTEN_ON_LOCAL_PORT']),print_console=True,trace_time=True)
 httpd.serve_forever()
