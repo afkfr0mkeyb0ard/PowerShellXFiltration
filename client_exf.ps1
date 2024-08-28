@@ -34,6 +34,7 @@ net_localgroup_administradors = Encode64(net localgroup administradores | out-st
 net_localgroups = Encode64(Get-LocalGroup | out-string);
 net_user = Encode64(net user | out-string);
 netstat = Encode64(netstat -ano | out-string);
+network_connection = Encode64(Get-NetConnectionProfile | out-string);
 network_hardware = Encode64(Get-NetAdapter | out-string);
 ping_google = Encode64(ping 8.8.8.8 -n 1 | out-string);
 process = Encode64(Get-Process | out-string);
