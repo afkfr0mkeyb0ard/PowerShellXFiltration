@@ -8,6 +8,7 @@ alias = Encode64(Get-ChildItem Alias: | out-string);
 antivirus = Encode64(Get-Service | Where-Object { $_.DisplayName -like "*McAfee*" -or $_.DisplayName -like "*Symantec*" -or $_.DisplayName -like "*Kaspersky*" -or $_.DisplayName -like "*Eset*" -or $_.DisplayName -like "*Sentinel*" -or $_.DisplayName -like "*Falcon*" -or $_.DisplayName -like "*Sophos*" -or $_.DisplayName -like "*Cortex*" -or $_.DisplayName -like "*Attivo*" -or $_.DisplayName -like "*Crowdstrike*" -or $_.DisplayName -like "*Cylance*" -or $_.DisplayName -like "*Carbon*" -or $_.DisplayName -like "*Deepinstinct*" -or $_.DisplayName -like "*mcafee*" -or $_.DisplayName -like "*Symantec*" -or $_.DisplayName -like "*Trend*" } | out-string);
 applocker = Encode64(Get-AppLockerPolicy -Effective -Xml | out-string);
 arp = Encode64(Get-NetNeighbor -AddressFamily IPv4 | ft ifIndex,IPAddress,LinkLayerAddress,State | out-string);
+bitlocker = Encode64(Get-BitLockerVolume | out-string);
 clipboard=Encode64(Get-Clipboard | out-string);
 defender_exclusions = Encode64(Get-MpPreference | select Exclusion* | fl | out-string);
 defender_status = Encode64(Get-MpComputerStatus | out-string);
