@@ -33,6 +33,7 @@ route = Encode64(Get-NetRoute | out-string);
 scheduled_tasks = Encode64(schtasks | out-string);
 services = Encode64(Get-Service | out-string);
 shares = Encode64(net share | out-string);
+smb_connections = Encode64(Get-SmbConnection);
 startup = Encode64(wmic startup get caption,command | out-string);
 systeminfo=Encode64(systeminfo | out-string);
 tasklist = Encode64(tasklist /v | out-string);
