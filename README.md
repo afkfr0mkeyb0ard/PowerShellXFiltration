@@ -6,6 +6,7 @@ Useful for redteam.
 1. Change the settings in `config.py`.
 2. Run:
 ```
+#Run the server
 ATTACKER> python3 server.py
 
 #For data exfiltration
