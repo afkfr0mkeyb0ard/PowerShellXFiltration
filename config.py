@@ -4,8 +4,8 @@ server = {
 	'SERVER_LISTEN_ON_LOCAL_IP':'0.0.0.0',
 	'SERVER_LISTEN_ON_LOCAL_PORT':'8000',
 	'SERVER_PROTOCOL':'http',
-	'CERT_PEMFILE':'cert.pem',
-	'CERT_KEYFILE':'key.pem'
+	'CERT_PEMFILE':'certs/cert.pem',
+	'CERT_KEYFILE':'certs/key.pem'
 }
 
 #DATA EXFILTRATION CONFIG
