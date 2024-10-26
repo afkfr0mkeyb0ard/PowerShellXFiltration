@@ -166,9 +166,9 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                     if 'hostname' in params:
                         hostname_bytes = base64.b64decode(unquote(params['hostname'])).replace(b'\x00',b'')
                         hostname_str = hostname_bytes.decode("windows-1252")
-                        if not os.path.exists(CURRENT_DIR + '/output/' + hostname_str):
-                            os.mkdir(CURRENT_DIR + '/output/' + hostname_str,mode = 0o777)
-                            log('[+] Created folder: ' + CURRENT_DIR + '/output/' + hostname_str,print_console=True,trace_time=True)
+                        if not os.path.exists(CURRENT_DIR + "/" + hostname_str + '/output/'):
+                            os.mkdir(CURRENT_DIR + "/" + hostname_str + '/output/',mode = 0o777)
+                            log('[+] Created folder: ' + CURRENT_DIR + "/" + hostname_str + '/output/',print_console=True,trace_time=True)
                         else:
                             pass
                         for key in params:
