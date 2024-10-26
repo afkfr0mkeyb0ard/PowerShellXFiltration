@@ -261,6 +261,16 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(b'Not Found')
 
+#Encode a string to Base64 after converting it to UTF-16 Little Endian
+def encode_to_base64_utf16_le(input_string):
+    try:
+        utf16_le_encoded = input_string.encode('utf-16-le')
+        base64_encoded = base64.b64encode(utf16_le_encoded)
+        return base64_encoded
+    except Exception as e:
+        print(f"Error while encoding : {e}")
+        return None
+        
 #Loggin function of events in the current folder
 #To print the logs in console output, set log(Text,True)
 def log(text,print_console=False,trace_time=True):
