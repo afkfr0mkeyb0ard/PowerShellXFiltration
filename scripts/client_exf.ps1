@@ -38,7 +38,7 @@ ipconfig = Encode64(ipconfig /all | out-string);
 iis_sites = Encode64(iis_sites_function);
 list_install_programs = Encode64(Get-ChildItem -path Registry::HKEY_LOCAL_MACHINE\SOFTWARE | ft Name | out-string);
 net_accounts = Encode64(net accounts | out-string);
-net_localgroup_administrators = Encode64(Get-LocalGroupMember -Group (Get-LocalGroup | Where-Object { $_.Name -like "Administra*" }) | Select-Object Name, ObjectClass | out-string);
+net_localgroup_administrators = Encode64($group=Get-LocalGroup | Where-Object { $_.SID -eq "S-1-5-32-544" };Get-LocalGroupMember -Group $group.name | Select-Object Name, ObjectClass | out-string);
 net_localgroups = Encode64(Get-LocalGroup | out-string);
 net_user = Encode64(net user | out-string);
 netstat = Encode64(netstat -ano | out-string);
