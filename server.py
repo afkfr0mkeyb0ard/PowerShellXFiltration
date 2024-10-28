@@ -241,6 +241,14 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(b'Not Found')
 
+#Rename a hostname to clean special chars
+#This prevents unwanted names when creating the hostname folder
+def renameHostname(hostname):
+    chars_to_replace = ['.','\\','/',':','*','?','"','<','>','|']
+    for char in chars_to_replace:
+        result = result.replace(char,'_')
+    return chaine
+
 #Generate a random uuid
 def generateUUID():
     result = uuid.uuid4()
