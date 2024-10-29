@@ -247,8 +247,8 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
 def renameHostname(hostname):
     chars_to_replace = ['.','\\','/',':','*','?','"','<','>','|']
     for char in chars_to_replace:
-        result = result.replace(char,'_')
-    return chaine
+        hostname = hostname.replace(char,'_')
+    return hostname
 
 #Generate a random uuid
 def generateUUID():
