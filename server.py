@@ -321,7 +321,10 @@ if PROTOCOL == 'https':
 
 httpd = HTTPServer((config.server['SERVER_LISTEN_ON_LOCAL_IP'],int(config.server['SERVER_LISTEN_ON_LOCAL_PORT'])), SimpleHTTPRequestHandler)
 if PROTOCOL == 'https':
-    httpd.socket = ssl.wrap_socket (httpd.socket,keyfile=config.server['CERT_KEYFILE'],certfile=config.server['CERT_PEMFILE'], server_side=True)
+    context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+    context.load_cert_chain(certfile=config.server['CERT_PEMFILE'], keyfile=config.server['CERT_KEYFILE'])
+    httpd.socket = context.wrap_socket(httpd.socket, server_side=True)
+    httpd.socket = ssl.wrap_socket(httpd.socket,keyfile=config.server['CERT_KEYFILE'],certfile=config.server['CERT_PEMFILE'], server_side=True)
     log("[+] Starting server on " + config.server['SERVER_LISTEN_ON_LOCAL_IP'] + ":" + str(config.server['SERVER_LISTEN_ON_LOCAL_PORT'] + ' with HTTPS'),print_console=True,trace_time=True)
 else:
     log("[+] Starting server on " + config.server['SERVER_LISTEN_ON_LOCAL_IP'] + ":" + str(config.server['SERVER_LISTEN_ON_LOCAL_PORT'] + ' with HTTP'),print_console=True,trace_time=True)
